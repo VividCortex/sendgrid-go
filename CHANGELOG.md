@@ -1,6 +1,47 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.4.1] - 2017-07-03
+### Added
+- [Pull #116](https://github.com/sendgrid/sendgrid-go/pull/116): Fixing mimetypes in the NewSingleEmail function
+- Big thanks to [Depado](https://github.com/Depado) for the pull request!
+
+## [3.4.0] - 2017-06-14
+### Added
+- [Pull #96](https://github.com/sendgrid/sendgrid-go/pull/96): Send a Single Email to a Single Recipient
+- Big thanks to [Oranagwa Osmond](https://github.com/andela-ooranagwa) for the pull request!
+
+## [3.3.1] - 2016-10-18
+### Fixed
+- [Pull #95](https://github.com/sendgrid/sendgrid-go/pull/95): Use log instead of fmt for printing errors
+- Big thanks to [Gábor Lipták](https://github.com/gliptak) for the pull request!
+
+## [3.3.0] - 2016-10-10
+### Added
+- [Pull #92](https://github.com/sendgrid/sendgrid-go/pull/92): Inbound Parse Webhook support
+- Checkout the [README](https://github.com/sendgrid/sendgrid-go/tree/master/helpers/inbound) for details.
+
+## [3.2.3] - 2016-10-10
+### Added
+- [Pull #91](https://github.com/sendgrid/sendgrid-go/pull/91): Simplified code in mail helper
+- Big thanks to [Roberto Ortega](https://github.com/berto) for the pull request!
+
+## [3.2.2] - 2016-09-08
+### Added
+- Merged pull request: [update prismPath and update prism binary](https://github.com/sendgrid/sendgrid-go/pull/80)
+- Special thanks to [Tom Pytleski](https://github.com/pytlesk4) for the pull request!
+
+## [3.2.1] - 2016-08-24
+### Added
+- Table of Contents in the README
+- Added a [USE_CASES.md](https://github.com/sendgrid/sendgrid-go/blob/master/USE_CASES.md) section, with the first use case example for transactional templates
+
+## [3.2.0] - 2016-08-17
+### Added
+- Merged pull request: [make contents var args in NewV3MailInit](https://github.com/sendgrid/sendgrid-go/pull/75)
+- The `NewV3MailInit` [Mail Helper](https://github.com/sendgrid/sendgrid-go/tree/master/helpers/mail) constructor can now take in multiple content objects.
+- Thanks to [Adrien Delorme](https://github.com/azr) for the pull request!
+
 ## [3.1.0] - 2016-07-28
 - Dependency update to v2.2.0 of [sendGrid-rest](https://github.com/sendgrid/rest/releases/tag/v2.2.0)
 - Pull [#9](https://github.com/sendgrid/rest/pull/9): Allow for setting a custom HTTP client
