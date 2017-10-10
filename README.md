@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/sendgrid/sendgrid-go.svg?branch=master)](https://travis-ci.org/sendgrid/sendgrid-go)
+[![Email Notifications Badge](https://dx.sendgrid.com/badge/go)](https://dx.sendgrid.com/newsletter/go)
+
+**NEW:** Subscribe to email [notifications](https://dx.sendgrid.com/newsletter/go) for releases and breaking changes.
 
 **This library allows you to quickly and easily use the SendGrid Web API v3 via Go.**
 
@@ -10,6 +13,20 @@ Please browse the rest of this README for further detail.
 
 We appreciate your continued support, thank you!
 
+# Table of Contents
+
+* [Installation](#installation)
+* [Quick Start](#quick_start)
+* [Processing Inbound Email](#inbound)
+* [Usage](#usage)
+* [Use Cases](#use_cases)
+* [Announcements](#announcements)
+* [Roadmap](#roadmap)
+* [How to Contribute](#contribute)
+* [Troubleshooting](#troubleshooting)
+* [About](#about)
+
+<a name="installation"></a>
 # Installation
 
 ## Prerequisites
@@ -31,14 +48,11 @@ source ./sendgrid.env
 
 `go get github.com/sendgrid/sendgrid-go`
 
-```go
-import "github.com/sendgrid/sendgrid-go"
-```
-
 ## Dependencies
 
 - [rest](https://github.com/sendgrid/rest)
 
+<a name="quick_start"></a>
 # Quick Start
 
 ## Hello Email
@@ -52,24 +66,24 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
-	"os"
 )
 
 func main() {
 	from := mail.NewEmail("Example User", "test@example.com")
-	subject := "Hello World from the SendGrid Go Library"
+	subject := "Sending with SendGrid is Fun"
 	to := mail.NewEmail("Example User", "test@example.com")
-	content := mail.NewContent("text/plain", "some text here")
-	m := mail.NewV3MailInit(from, subject, to, content)
-
-	request := sendgrid.GetRequest(os.Getenv("SENDGRID_API_KEY"), "/v3/mail/send", "https://api.sendgrid.com")
-	request.Method = "POST"
-	request.Body = mail.GetRequestBody(m)
-	response, err := sendgrid.API(request)
+	plainTextContent := "and easy to do anywhere, even with Go"
+	htmlContent := "<strong>and easy to do anywhere, even with Go</strong>"
+	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
+	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
+	response, err := client.Send(message)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	} else {
 		fmt.Println(response.StatusCode)
 		fmt.Println(response.Body)
@@ -78,7 +92,7 @@ func main() {
 }
 ```
 
-The `NewV3MailInit` constructor creates a [personalization object](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/personalizations.html) for you. [Here](https://github.com/sendgrid/sendgrid-go/blob/master/examples/helpers/mail/example.go#L28) is an example of how to add to it.
+The `NewEmail` constructor creates a [personalization object](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/personalizations.html) for you. [Here](https://github.com/sendgrid/sendgrid-go/blob/master/examples/helpers/mail/example.go#L28) is an example of how to add to it.
 
 ### Without Mail Helper Class
 
@@ -90,6 +104,7 @@ package main
 import (
 	"fmt"
 	"github.com/sendgrid/sendgrid-go"
+	"log"
 	"os"
 )
 
@@ -104,7 +119,7 @@ func main() {
 					"email": "test@example.com"
 				}
 			],
-			"subject": "Hello World from the SendGrid Go Library!"
+			"subject": "Sending with SendGrid is Fun"
 		}
 	],
 	"from": {
@@ -113,13 +128,13 @@ func main() {
 	"content": [
 		{
 			"type": "text/plain",
-			"value": "Hello, Email!"
+			"value": "and easy to do anywhere, even with Go"
 		}
 	]
 }`)
 	response, err := sendgrid.API(request)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	} else {
 		fmt.Println(response.StatusCode)
 		fmt.Println(response.Body)
@@ -136,6 +151,7 @@ package main
 import (
 	"fmt"
 	"github.com/sendgrid/sendgrid-go"
+	"log"
 	"os"
 )
 
@@ -145,7 +161,7 @@ func main() {
 
 	response, err := sendgrid.API(request)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	} else {
 		fmt.Println(response.StatusCode)
 		fmt.Println(response.Body)
@@ -154,6 +170,13 @@ func main() {
 }
 ```
 
+
+<a name="inbound"></a>
+# Processing Inbound Email
+
+Please see [our helper](https://github.com/sendgrid/sendgrid-go/tree/master/helpers/inbound) for utilizing our Inbound Parse webhook.
+
+<a name="usage"></a>
 # Usage
 
 - [SendGrid Docs](https://sendgrid.com/docs/API_Reference/index.html)
@@ -162,14 +185,24 @@ func main() {
 - [How-to: Migration from v2 to v3](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/how_to_migrate_from_v2_to_v3_mail_send.html)
 - [v3 Web API Mail Send Helper](https://github.com/sendgrid/sendgrid-go/tree/master/helpers/mail/README.md)
 
+<a name="use_cases"></a>
+# Use Cases
+
+[Examples of common API use cases](https://github.com/sendgrid/sendgrid-go/blob/master/USE_CASES.md), such as how to send an email with a transactional template.
+
+<a name="announcements"></a>
 # Announcements
 
-All updates to this library is documented in our [CHANGELOG](https://github.com/sendgrid/sendgrid-go/blob/master/CHANGELOG.md) and [releases](https://github.com/sendgrid/sendgrid-go/releases).
+Please see our announcement regarding [breaking changes](https://github.com/sendgrid/sendgrid-go/issues/81). Your support is appreciated!
 
+All updates to this library are documented in our [CHANGELOG](https://github.com/sendgrid/sendgrid-go/blob/master/CHANGELOG.md) and [releases](https://github.com/sendgrid/sendgrid-go/releases). You may also subscribe to email [release notifications](https://dx.sendgrid.com/newsletter/go) for releases and breaking changes.
+
+<a name="roadmap"></a>
 # Roadmap
 
 If you are interested in the future direction of this project, please take a look at our open [issues](https://github.com/sendgrid/sendgrid-go/issues) and [pull requests](https://github.com/sendgrid/sendgrid-go/pulls). We would love to hear your feedback.
 
+<a name="contribute"></a>
 # How to Contribute
 
 We encourage contribution to our libraries (you might even score some nifty swag), please see our [CONTRIBUTING](https://github.com/sendgrid/sendgrid-go/blob/master/CONTRIBUTING.md) guide for details.
@@ -181,15 +214,16 @@ Quick links:
 - [Sign the CLA to Create a Pull Request](https://github.com/sendgrid/sendgrid-go/tree/master/CONTRIBUTING.md#cla)
 - [Improvements to the Codebase](https://github.com/sendgrid/sendgrid-go/tree/master/CONTRIBUTING.md#improvements_to_the_codebase)
 
+<a name="troubleshooting"></a>
 # Troubleshooting
 
 Please see our [troubleshooting guide](https://github.com/sendgrid/sendgrid-go/blob/master/TROUBLESHOOTING.md) for common library issues.
 
+<a name="about"></a>
 # About
 
 sendgrid-go is guided and supported by the SendGrid [Developer Experience Team](mailto:dx@sendgrid.com).
 
 sendgrid-go is maintained and funded by SendGrid, Inc. The names and logos for sendgrid-go are trademarks of SendGrid, Inc.
 
-![SendGrid Logo]
-(https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
+![SendGrid Logo](https://uiux.s3.amazonaws.com/2016-logos/email-logo%402x.png)
