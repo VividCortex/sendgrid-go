@@ -15,8 +15,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sendgrid/rest"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"github.com/VividCortex/rest"
+	"github.com/VividCortex/sendgrid-go/helpers/mail"
 )
 
 var (

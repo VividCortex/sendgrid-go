@@ -13,7 +13,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/sendgrid/rest"
+	"github.com/VividCortex/rest"
 )
 
 type configuration struct {
